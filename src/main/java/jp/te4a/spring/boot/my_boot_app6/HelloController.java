@@ -14,13 +14,13 @@ public class HelloController {
     @Autowired
     BookService bookService;
 
-    @GetMapping("/")
+    @GetMapping("books/list")
     public String index(Model model) {
         model.addAttribute("msg", "this is a setting message");
-        return "index";
+        return "books/list";
     }
     
-    @PostMapping("/post")
+    @PostMapping("books/list")
     public ModelAndView postMethodName(
         @RequestParam("id") String id,
         @RequestParam("title") String title,
@@ -28,7 +28,7 @@ public class HelloController {
         @RequestParam("publisher") String publisher,
         @RequestParam("price") String price
     ) {
-        var mv = new ModelAndView("index");
+        var mv = new ModelAndView("books/list");
         var bookBean = new BookBean(
             Integer.valueOf(id), 
             title, 
@@ -38,18 +38,8 @@ public class HelloController {
         );
 
         bookService.save(bookBean);
-        var buff = new StringBuffer();
-        buff.append("<hr>");
-        for (var bean: bookService.findAll()) {
-            buff.append("ID: " + bean.getId() + "<br>");
-            buff.append("タイトル: " + bean.getTitle() + "<br>");
-            buff.append("著者: " + bean.getWriter() + "<br>");
-            buff.append("出版社: " + bean.getPublisher() + "<br>");
-            buff.append("価格: " + bean.getPrice() + "<br>");
-            buff.append("<hr>");
-        }
-
-        mv.addObject("msg", buff.toString());
+        
+        mv.addObject("books", bookService.findAll());
         return mv;
     }
     
