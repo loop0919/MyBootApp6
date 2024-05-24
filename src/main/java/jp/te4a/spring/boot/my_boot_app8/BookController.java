@@ -1,45 +1,65 @@
 package jp.te4a.spring.boot.my_boot_app8;
 
+import java.util.UUID;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 
 
 @Controller
+@RequestMapping("books")
 public class BookController {
     @Autowired
     BookService bookService;
 
-    @GetMapping("books/list")
-    public ModelAndView index(ModelAndView mv) {
-        mv.addObject("books", bookService.findAll());
-        return mv;
+    @ModelAttribute
+    BookForm setUpForm() {
+        return new BookForm();
     }
-    
-    @PostMapping("books/list")
-    public ModelAndView postBookData(
-        @RequestParam("id") String id,
-        @RequestParam("title") String title,
-        @RequestParam("writer") String writer,
-        @RequestParam("publisher") String publisher,
-        @RequestParam("price") String price,
-        ModelAndView mv
-    ) {
-        var bookBean = new BookBean(
-            Integer.valueOf(id), 
-            title, 
-            writer, 
-            publisher, 
-            Integer.valueOf(price)
-        );
 
-        bookService.save(bookBean);
-        
-        mv.addObject("books", bookService.findAll());
-        return mv;
+    @GetMapping
+    public String list(Model model) {
+        model.addAttribute("books", bookService.findAll());
+        return "books/list";
     }
     
+    @PostMapping(path="create")
+    public String create(BookForm form,Model model) {
+        bookService.create(form);
+        return "redirect:/books";
+    }
+
+    @PostMapping(path="edit", params="form")
+    public String editForm(@RequestParam UUID id, BookForm form) {
+        var bookForm = bookService.findOne(id);
+        BeanUtils.copyProperties(bookForm, form);
+        return "books/edit";
+    }
+    
+    @PostMapping(path="edit")
+    String edit(@RequestParam UUID id, BookForm form) {
+        bookService.update(form);
+        return "redirect:/books";
+    }
+
+    @PostMapping(path="delete")
+    String delete(@RequestParam UUID id) {
+        bookService.delete(id);
+        return "redirect:/books";
+    }
+
+    @PostMapping(path="edit", params="goToTop")
+    String goToTop() {
+        return "redirect:/books";
+    }
 }

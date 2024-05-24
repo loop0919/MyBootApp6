@@ -6,15 +6,6 @@
     </head>
     <body>
         <h1>書籍登録一覧</h1>
-        <table>
-            <tr th:each="book: ${books}">
-                <td th:text="${book.id}">1001</td>
-                <td th:text="${book.title}">The Sample Book</td>
-                <td th:text="${book.writer}">Alice</td>
-                <td th:text="${book.publisher}">Test Company</td>
-                <td th:text="${book.price}">998244353</td>
-            </tr>
-        </table>
         <form th:action="@{/books/create}" method="post">
             <table>
                 <tr><td>タイトル:</td><td><input type="text" name="title"/></td></tr>
@@ -24,5 +15,26 @@
                 <tr><td></td><td><input type="submit" value="作成"/></td></tr>
             </table>
         </form>
+        <table>
+            <tr th:each="book: ${books}">
+                <td th:text="${book.id}">1001</td>
+                <td th:text="${book.title}">The Sample Book</td>
+                <td th:text="${book.writer}">Alice</td>
+                <td th:text="${book.publisher}">Test Company</td>
+                <td th:text="${book.price}">998244353</td>
+                <td>
+                    <form th:action="@{/books/edit}" method="post">
+                        <input type="submit" name="form" value="編集"/>
+                        <input type="hidden" name="id" th:value="${book.id}"/>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/books/delete}" method="post">
+                        <input type="submit" name="form" value="削除"/>
+                        <input type="hidden" name="id" th:value="${book.id}"/>
+                    </form>
+                </td>
+            </tr>
+        </table>
     </body>
 </html>
