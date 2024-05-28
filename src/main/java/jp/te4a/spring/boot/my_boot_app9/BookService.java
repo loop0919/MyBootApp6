@@ -35,7 +35,7 @@ public class BookService {
     }
 
     public List<BookForm> findAll() {
-        List<BookForm> formList = bookRepository.findAll()
+        var formList = bookRepository.findAll()
                 .stream()
                 .map(bean -> {
                     var form = new BookForm();
