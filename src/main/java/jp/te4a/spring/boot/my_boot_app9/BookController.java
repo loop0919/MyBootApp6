@@ -25,19 +25,19 @@ public class BookController {
     }
 
     @GetMapping
-    public String list(Model model) {
+    String list(Model model) {
         model.addAttribute("books", bookService.findAll());
         return "books/list";
     }
     
     @PostMapping(path="create")
-    public String create(BookForm form,Model model) {
+    String create(BookForm form, Model model) {
         bookService.create(form);
         return "redirect:/books";
     }
 
     @PostMapping(path="edit", params="form")
-    public String editForm(@RequestParam UUID id, BookForm form) {
+    String editForm(@RequestParam UUID id, @ModelAttribute("bookForm") BookForm form) {
         var bookForm = bookService.findOne(id);
         BeanUtils.copyProperties(bookForm, form);
         return "books/edit";
