@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: jp.te4a.spring.boot.my_boot_app9.MyBootApp6ApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.333 s -- in jp.te4a.spring.boot.my_boot_app9.MyBootApp6ApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.594 s -- in jp.te4a.spring.boot.my_boot_app9.MyBootApp6ApplicationTests
