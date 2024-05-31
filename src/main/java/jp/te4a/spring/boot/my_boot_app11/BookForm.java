@@ -17,6 +17,7 @@ public class BookForm {
     @Size(min=3)
     private String title;
     
+    @Writer(ok="東北タロウ")
     @Size(min=3, max=20)
     private String writer;
 
