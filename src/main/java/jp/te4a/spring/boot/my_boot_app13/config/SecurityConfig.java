@@ -20,7 +20,8 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
         )
         .formLogin(form -> form
-                .loginPage("/login")
+            .loginProcessingUrl("/login")
+                .loginPage("/loginForm")
                 .failureUrl("/loginForm?error")
                 .defaultSuccessUrl("/books", true)
                 .usernameParameter("username")
